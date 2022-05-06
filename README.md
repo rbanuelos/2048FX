@@ -35,6 +35,12 @@ Run Integration tests
 mvn verify
 ```
 
+
+## Screenshot
+
+![image](https://user-images.githubusercontent.com/654552/167220768-b152efd4-d817-4786-93ec-2e9d85cc826e.png)
+
+
 ## Coding style
 
 This project is develop under
