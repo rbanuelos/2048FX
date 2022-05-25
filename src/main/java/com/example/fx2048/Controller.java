@@ -8,7 +8,7 @@ import javafx.scene.layout.GridPane;
 /**
  * Controller class.
  *
- * <p>It handles applies user inputs to game and updates the view
+ * <p>It handles user inputs and applies to game and updates the view
  */
 public class Controller {
 
@@ -22,7 +22,7 @@ public class Controller {
   }
 
   /**
-   * Kickoffs the game with the first turn and updates the view.
+   * Kick off the game with the first turn and updates the view.
    */
   public void start() {
     game.nextTurn();
