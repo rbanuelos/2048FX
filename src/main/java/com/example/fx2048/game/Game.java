@@ -19,7 +19,7 @@ public class Game {
   private int winScore = 2048;
 
   /**
-   * Default constructor for a 2048 game
+   * Default constructor for a 2048 game.
    */
   public Game() {
     gameGrid = new Grid(DIMENSION);
@@ -34,14 +34,6 @@ public class Game {
    */
   public boolean nextTurn() {
     return generateNewValue();
-  }
-
-  private boolean hasAnyValueChanged() {
-    return Arrays.stream(gameGrid.getGrid())
-        .flatMap(Arrays::stream)
-        .map(Spot::hasChanged)
-        .reduce((a, b) -> a || b)
-        .orElse(false);
   }
 
   private boolean generateNewValue() {
