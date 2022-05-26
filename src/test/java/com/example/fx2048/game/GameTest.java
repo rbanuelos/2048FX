@@ -19,6 +19,7 @@ public class GameTest {
       0 0 0 0     0 0 0 0
      */
     Game testGame = new Game();
+    testGame.getGameGrid().resetAll(); // remove initial random new value
     Spot[][] testSpots = testGame.getGameGrid().getGrid();
     testSpots[1][2] = new Spot(2);
     testSpots[1][3] = new Spot(4);
@@ -37,6 +38,7 @@ public class GameTest {
       0 4 8 0     0 0 0 0
      */
     Game testGame = new Game();
+    testGame.getGameGrid().resetAll(); // remove initial random new value
     Spot[][] testSpots = testGame.getGameGrid().getGrid();
     testSpots[0][0] = new Spot(2);
     testSpots[1][3] = new Spot(2);
@@ -60,6 +62,7 @@ public class GameTest {
       0 0 0 0     0 0 0 0
      */
     Game testGame = new Game();
+    testGame.getGameGrid().resetAll(); // remove initial random new value
     Spot[][] testSpots = testGame.getGameGrid().getGrid();
     testSpots[1][2] = new Spot(2);
     testSpots[1][3] = new Spot(4);
@@ -78,6 +81,7 @@ public class GameTest {
       0 0 0 2     2 2 2 2
      */
     Game testGame = new Game();
+    testGame.getGameGrid().resetAll(); // remove initial random new value
     Spot[][] testSpots = testGame.getGameGrid().getGrid();
     testSpots[0][0] = new Spot(2);
     testSpots[1][1] = new Spot(2);
@@ -101,6 +105,7 @@ public class GameTest {
       0 0 0 4     0 0 0 0
      */
     Game testGame = new Game();
+    testGame.getGameGrid().resetAll(); // remove initial random new value
     Spot[][] testSpots = testGame.getGameGrid().getGrid();
     testSpots[1][3] = new Spot(4);
     testSpots[3][3] = new Spot(4);
@@ -118,6 +123,7 @@ public class GameTest {
       0 0 0 0     0 0 0 0
      */
     Game testGame = new Game();
+    testGame.getGameGrid().resetAll(); // remove initial random new value
     Spot[][] testSpots = testGame.getGameGrid().getGrid();
     testSpots[2][0] = new Spot(4);
     testSpots[2][1] = new Spot(4);
@@ -140,6 +146,7 @@ public class GameTest {
       0 0 0 0     0 0 0 0
      */
     Game testGame = new Game();
+    testGame.getGameGrid().resetAll(); // remove initial random new value
     Spot[][] testSpots = testGame.getGameGrid().getGrid();
     testSpots[2][0] = new Spot(8);
     testSpots[2][1] = new Spot(4);
@@ -162,6 +169,7 @@ public class GameTest {
       0 0 0 0     0 0 0 0
      */
     Game testGame = new Game();
+    testGame.getGameGrid().resetAll(); // remove initial random new value
     Spot[][] testSpots = testGame.getGameGrid().getGrid();
     testSpots[1][0] = new Spot(4);
     testSpots[1][1] = new Spot(4);
@@ -174,9 +182,21 @@ public class GameTest {
   }
 
   @Test()
-  public void nextTurnTest() {
+  public void nextTurnWhenMoveIsNotAllowTest() {
+    /*
+      0 0 0 0     0 0 0 0
+      4 0 0 0  >  4 0 0 0
+      0 0 0 0     0 0 0 0
+      0 0 0 0     0 0 0 0
+     */
     Game testGame = new Game();
-    assertTrue(testGame.nextTurn());
+    testGame.getGameGrid().resetAll(); // remove initial random new value
+    Spot[][] testSpots = testGame.getGameGrid().getGrid();
+    testSpots[1][0] = new Spot(4);
+
+    testGame.moveLeft(); //move left should not allow a next turn and no new value in grid
+    assertEquals(4, testGame.getGameGrid().getGrid()[1][0].getValue());
+    assertFalse(testGame.nextTurn());
   }
 
   @Test()
@@ -190,9 +210,9 @@ public class GameTest {
   }
 
   @Test()
-  public void nextTurnWhenGridHas2048Test() {
+  public void gameFinishedWhenGridHas2048Test() {
     Game testGame = new Game();
     testGame.getGameGrid().getGrid()[0][0].setValue(2048);
-    assertFalse(testGame.nextTurn());
+    assertTrue(testGame.isGameFinished());
   }
 }

@@ -15,26 +15,37 @@ import java.util.Random;
 public class Game {
   public static final int DIMENSION = 4;
   private static final int[] NEW_VALUES = {2, 4};
-  private static final int WIN_SCORE = 2048;
-
   private final Grid gameGrid;
+  private int winScore = 2048;
 
+  /**
+   * Default constructor for a 2048 game
+   */
   public Game() {
     gameGrid = new Grid(DIMENSION);
+    generateNewValue();
   }
 
   /**
-   * Reset changed value flag after previous turn. Checks for game completion and if is possible
-   * to add new value in grid for next turn
+   * Reset changed value flag after previous turn. Checks if is possible to add new value in grid
+   * for next turn
    *
-   * @return true if game is not over and a new random value was added to the grid, false otherwise
+   * @return true if a new random value was added to the grid, false otherwise
    */
   public boolean nextTurn() {
-    gameGrid.resetChangedValues();
-    return !isGameFinished() && generateNewValue();
+    return generateNewValue();
+  }
+
+  private boolean hasAnyValueChanged() {
+    return Arrays.stream(gameGrid.getGrid())
+        .flatMap(Arrays::stream)
+        .map(Spot::hasChanged)
+        .reduce((a, b) -> a || b)
+        .orElse(false);
   }
 
   private boolean generateNewValue() {
+    gameGrid.resetChangedValues();
     Spot emptySpot = gameGrid.getRandomEmptySpot();
     if (emptySpot == null) {
       return false;
@@ -51,7 +62,7 @@ public class Game {
   public boolean isGameFinished() {
     return Arrays.stream(gameGrid.getGrid())
         .flatMap(Arrays::stream)
-        .anyMatch(spot -> spot.getValue() == WIN_SCORE);
+        .anyMatch(spot -> spot.getValue() == winScore);
   }
 
   /**
@@ -103,10 +114,6 @@ public class Game {
     return gameGrid;
   }
 
-  public void reset() {
-    gameGrid.resetAll();
-  }
-
   /**
    * shifts and aggregates the grid. Both shift and aggregate only support left direction operation.
    * It's meant to be used with transpose and mirror to simulate up, down and right direction
@@ -122,8 +129,7 @@ public class Game {
   }
 
   /**
-   * Moves non-zero values to the start of the array. It applies the same operation for all rows in
-   * the grid.
+   * Moves non-zero values to the start of the array.
    */
   private void shift(Spot[] spots) {
     int index = 0;
@@ -153,5 +159,13 @@ public class Game {
         spots[i].setValue(0);
       }
     }
+  }
+
+  public void increaseWinScore() {
+    this.winScore = this.winScore * 2;
+  }
+
+  public int getWinScore() {
+    return this.winScore;
   }
 }

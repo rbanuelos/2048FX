@@ -2,6 +2,7 @@ package com.example.fx2048;
 
 import com.example.fx2048.game.Game;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
@@ -12,10 +13,13 @@ import javafx.scene.layout.GridPane;
  */
 public class Controller {
 
-  private final Game game;
+  private Game game;
 
   @FXML
   private GridPane gridView;
+
+  @FXML
+  private Label labelView;
 
   public Controller() {
     game = new Game();
@@ -25,7 +29,7 @@ public class Controller {
    * Kick off the game with the first turn and updates the view.
    */
   public void start() {
-    game.nextTurn();
+    updateLabelView();
     updateGridView();
   }
 
@@ -34,6 +38,14 @@ public class Controller {
    */
   public void moveUp() {
     game.moveUp();
+    updateGridView();
+
+    if (game.isGameFinished()) {
+      game.increaseWinScore();
+      updateLabelView();
+      return;
+    }
+
     if (game.nextTurn()) {
       updateGridView();
     }
@@ -44,6 +56,14 @@ public class Controller {
    */
   public void moveDown() {
     game.moveDown();
+    updateGridView();
+
+    if (game.isGameFinished()) {
+      game.increaseWinScore();
+      updateLabelView();
+      return;
+    }
+
     if (game.nextTurn()) {
       updateGridView();
     }
@@ -54,6 +74,14 @@ public class Controller {
    */
   public void moveLeft() {
     game.moveLeft();
+    updateGridView();
+
+    if (game.isGameFinished()) {
+      game.increaseWinScore();
+      updateLabelView();
+      return;
+    }
+
     if (game.nextTurn()) {
       updateGridView();
     }
@@ -64,6 +92,14 @@ public class Controller {
    */
   public void moveRight() {
     game.moveRight();
+    updateGridView();
+
+    if (game.isGameFinished()) {
+      game.increaseWinScore();
+      updateLabelView();
+      return;
+    }
+
     if (game.nextTurn()) {
       updateGridView();
     }
@@ -73,8 +109,12 @@ public class Controller {
    * Resets game grid and view.
    */
   public void reset() {
-    game.reset();
+    game = new Game();
     start();
+  }
+
+  private void updateLabelView() {
+    labelView.setText(String.valueOf(game.getWinScore()));
   }
 
   private void updateGridView() {
